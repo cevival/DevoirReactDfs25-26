@@ -23,22 +23,33 @@ export function HomePage() {
   }, []);
 
   return (
-    <section>
-      <h1 className={styles.title}>Conferences</h1>
+    <>
+      <section className={styles.hero}>
+        <h1 className={styles.heroTitle}>Découvrez nos conférences</h1>
+        <p className={styles.heroSubtitle}>
+          Des événements inspirants pour développer vos compétences
+        </p>
+      </section>
 
-      {isLoading ? <p>Chargement des conférences...</p> : null}
+      <section className={styles.section}>
+        <h2 className={styles.title}>Prochaines conférences</h2>
 
-      {!isLoading && conferences.length === 0 ? (
-        <p className={styles.empty}>Aucune conférence pour le moment.</p>
-      ) : null}
+        {isLoading ? (
+          <p className={styles.loading}>Chargement des conférences...</p>
+        ) : null}
 
-      <div className={styles.grid}>
-        {conferences.map((conference) => {
-          const key = conference?.id ?? conference?._id;
+        {!isLoading && conferences.length === 0 ? (
+          <p className={styles.empty}>Aucune conférence pour le moment.</p>
+        ) : null}
 
-          return <ConferenceCard key={key} conference={conference} />;
-        })}
-      </div>
-    </section>
+        <div className={styles.grid}>
+          {conferences.map((conference) => {
+            const key = conference?.id ?? conference?._id;
+
+            return <ConferenceCard key={key} conference={conference} />;
+          })}
+        </div>
+      </section>
+    </>
   );
 }

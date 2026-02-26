@@ -10,26 +10,33 @@ export function MainLayout({ children }) {
   return (
     <div className={styles.layout}>
       <header className={styles.header}>
+        <Link to={ROUTES.HOME} className={styles.brand}>
+          <img src="/logo.png" alt="Logo" className={styles.logo} />
+          <h1 className={styles.brandName}>ConférenceHub</h1>
+        </Link>
+
         <nav className={styles.nav} aria-label="Navigation principale">
           <Link className={styles.link} to={ROUTES.HOME}>
             Accueil
           </Link>
           {isAdmin && (
-            <Link className={styles.link} to={ROUTES.ADMIN_CONFERENCES}>
-              Admin conférences
-            </Link>
-          )}
-          {isAdmin && (
-            <Link className={styles.link} to={ROUTES.ADMIN_USERS}>
-              Admin utilisateurs
-            </Link>
+            <>
+              <Link className={styles.link} to={ROUTES.ADMIN_CONFERENCES}>
+                Admin conférences
+              </Link>
+              <Link className={styles.link} to={ROUTES.ADMIN_USERS}>
+                Admin utilisateurs
+              </Link>
+            </>
           )}
         </nav>
 
         <div className={styles.nav}>
           {isAuthenticated ? (
             <>
-              <span>{currentUser?.id ?? "Utilisateur"}</span>
+              <span className={styles.userInfo}>
+                {currentUser?.id ?? "Utilisateur"}
+              </span>
               <button type="button" className={styles.button} onClick={logout}>
                 Se déconnecter
               </button>

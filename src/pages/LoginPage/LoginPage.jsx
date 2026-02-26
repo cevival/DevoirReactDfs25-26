@@ -28,12 +28,17 @@ export function LoginPage() {
   };
 
   return (
-    <section className={styles.wrapper}>
-      <h1 className={styles.title}>Connexion</h1>
-      <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
-      <p>
-        Pas encore de compte ? <Link to={ROUTES.REGISTER}>Créer un compte</Link>
-      </p>
-    </section>
+    <div className={styles.page}>
+      <div className={styles.card}>
+        <section className={styles.wrapper}>
+          <h1 className={styles.title}>Connexion</h1>
+          <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
+          <p className={styles.registerLink}>
+            Pas encore de compte ?{" "}
+            <Link to={ROUTES.REGISTER}>Créer un compte</Link>
+          </p>
+        </section>
+      </div>
+    </div>
   );
 }

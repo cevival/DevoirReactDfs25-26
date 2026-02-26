@@ -26,62 +26,75 @@ export function ConferenceDetailPage() {
   }, [id]);
 
   if (isLoading) {
-    return <p>Chargement...</p>;
+    return <div className={styles.loading}>Chargement...</div>;
   }
 
   if (!conference) {
-    return <p>Conférence introuvable.</p>;
+    return <div className={styles.error}>Conférence introuvable.</div>;
   }
 
-  const mainColor = conference?.design?.mainColor ?? "#ffffff";
-  const secondColor = conference?.design?.secondColor ?? "#0f172a";
-
   return (
-    <article
-      className={styles.card}
-      style={{ backgroundColor: mainColor, color: secondColor }}
-    >
-      <h1>{conference.title}</h1>
-      <p className={styles.meta}>{conference.date}</p>
-      <p className={styles.meta}>{conference.duration}</p>
-      {conference.img ? (
-        <img
-          className={styles.cover}
-          src={conference.img}
-          alt={conference.title}
-        />
-      ) : null}
-      <p>{conference.description}</p>
+    <div className={styles.container}>
+      <article className={styles.card}>
+        {conference.img && (
+          <div className={styles.hero}>
+            <img
+              className={styles.cover}
+              src={conference.img}
+              alt={conference.title}
+            />
+            <div className={styles.overlay}>
+              <h1 className={styles.title}>{conference.title}</h1>
+            </div>
+          </div>
+        )}
 
-      <section className={styles.block}>
-        <h2>Contenu</h2>
-        <p>{conference.content}</p>
-      </section>
+        <div className={styles.content}>
+          {!conference.img && (
+            <h1 className={styles.title}>{conference.title}</h1>
+          )}
 
-      <section className={styles.block}>
-        <h2>Intervenants</h2>
-        <ul>
-          {toArray(conference.speakers).map((speaker, index) => (
-            <li key={`${speaker.firstname}-${speaker.lastname}-${index}`}>
-              {speaker.firstname} {speaker.lastname}
-            </li>
-          ))}
-        </ul>
-      </section>
+          <p className={styles.meta}>
+            📅 {conference.date} • ⏱️ {conference.duration}
+          </p>
 
-      <section className={styles.block}>
-        <h2>Partenaires</h2>
-        <ul>
-          {toArray(conference.stakeholders).map((stakeholder, index) => (
-            <li
-              key={`${stakeholder.firstname}-${stakeholder.lastname}-${index}`}
-            >
-              {stakeholder.firstname} {stakeholder.lastname}{" "}
-              {stakeholder.job ? `- ${stakeholder.job}` : ""}
-            </li>
-          ))}
-        </ul>
-      </section>
-    </article>
+          <p className={styles.description}>{conference.description}</p>
+
+          <section className={styles.block}>
+            <h2 className={styles.blockTitle}>Contenu</h2>
+            <p className={styles.contentText}>{conference.content}</p>
+          </section>
+
+          <section className={styles.block}>
+            <h2 className={styles.blockTitle}>Intervenants</h2>
+            <ul className={styles.list}>
+              {toArray(conference.speakers).map((speaker, index) => (
+                <li
+                  className={styles.listItem}
+                  key={`${speaker.firstname}-${speaker.lastname}-${index}`}
+                >
+                  {speaker.firstname} {speaker.lastname}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className={styles.block}>
+            <h2 className={styles.blockTitle}>Partenaires</h2>
+            <ul className={styles.list}>
+              {toArray(conference.stakeholders).map((stakeholder, index) => (
+                <li
+                  className={styles.listItem}
+                  key={`${stakeholder.firstname}-${stakeholder.lastname}-${index}`}
+                >
+                  {stakeholder.firstname} {stakeholder.lastname}{" "}
+                  {stakeholder.job ? `- ${stakeholder.job}` : ""}
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      </article>
+    </div>
   );
 }

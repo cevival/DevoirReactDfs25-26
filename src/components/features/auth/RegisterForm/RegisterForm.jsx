@@ -40,7 +40,9 @@ export function RegisterForm({ onSubmit, isLoading }) {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.field}>
-        <label htmlFor="reg-id">Identifiant</label>
+        <label htmlFor="reg-id" className={styles.label}>
+          Identifiant
+        </label>
         <input
           id="reg-id"
           className={styles.input}
@@ -51,7 +53,9 @@ export function RegisterForm({ onSubmit, isLoading }) {
       </div>
 
       <div className={styles.field}>
-        <label htmlFor="reg-password">Mot de passe</label>
+        <label htmlFor="reg-password" className={styles.label}>
+          Mot de passe
+        </label>
         <input
           id="reg-password"
           className={styles.input}
@@ -64,7 +68,9 @@ export function RegisterForm({ onSubmit, isLoading }) {
       </div>
 
       <div className={styles.field}>
-        <label htmlFor="reg-confirm">Confirmer le mot de passe</label>
+        <label htmlFor="reg-confirm" className={styles.label}>
+          Confirmer le mot de passe
+        </label>
         <input
           id="reg-confirm"
           className={styles.input}

@@ -26,7 +26,9 @@ export function LoginForm({ onSubmit, isLoading }) {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.field}>
-        <label htmlFor="id">Identifiant</label>
+        <label htmlFor="id" className={styles.label}>
+          Identifiant
+        </label>
         <input
           id="id"
           className={styles.input}
@@ -36,7 +38,9 @@ export function LoginForm({ onSubmit, isLoading }) {
       </div>
 
       <div className={styles.field}>
-        <label htmlFor="password">Mot de passe</label>
+        <label htmlFor="password" className={styles.label}>
+          Mot de passe
+        </label>
         <input
           id="password"
           className={styles.input}

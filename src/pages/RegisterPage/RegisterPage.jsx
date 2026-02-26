@@ -29,15 +29,16 @@ export function RegisterPage() {
   };
 
   return (
-    <section className={styles.wrapper}>
-      <h1 className={styles.title}>Créer un compte</h1>
-      <RegisterForm onSubmit={handleRegister} isLoading={isLoading} />
-      <p>
-        Déjà un compte ?{" "}
-        <Link className={styles.loginLink} to={ROUTES.LOGIN}>
-          Se connecter
-        </Link>
-      </p>
-    </section>
+    <div className={styles.page}>
+      <div className={styles.card}>
+        <section className={styles.wrapper}>
+          <h1 className={styles.title}>Créer un compte</h1>
+          <RegisterForm onSubmit={handleRegister} isLoading={isLoading} />
+          <p className={styles.loginLink}>
+            Déjà un compte ? <Link to={ROUTES.LOGIN}>Se connecter</Link>
+          </p>
+        </section>
+      </div>
+    </div>
   );
 }
