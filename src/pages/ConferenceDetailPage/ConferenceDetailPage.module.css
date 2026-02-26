@@ -1,0 +1,20 @@
+.card {
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.cover {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.meta {
+  color: #334155;
+}
+
+.block {
+  margin-top: 1rem;
+}
