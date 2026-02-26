@@ -142,6 +142,14 @@ export function AdminConferencesPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const payload = toConferencePayload(formValues);
+    // Validation date : empêcher date antérieure à aujourd'hui
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const confDate = new Date(formValues.date);
+    if (confDate < today) {
+      toast.error("La date de la conférence ne peut pas être antérieure à aujourd'hui.");
+      return;
+    }
     try {
       if (selectedId) {
         await conferencesApi.update(selectedId, payload);

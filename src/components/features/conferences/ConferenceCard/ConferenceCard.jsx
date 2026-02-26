@@ -22,6 +22,7 @@ export function ConferenceCard({ conference }) {
         <h2 className={styles.title}>{conference?.title}</h2>
         <p className={styles.meta}>📅 {conference?.date}</p>
         <p className={styles.description}>{conference?.description}</p>
+        <p className={styles.date}>Date : {conference?.date?.split("-").join("/")}</p>
         {id && (
           <Link className={styles.link} to={`/conference/${id}`}>
             Voir le détail
