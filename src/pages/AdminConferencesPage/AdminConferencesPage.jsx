@@ -144,10 +144,12 @@ export function AdminConferencesPage() {
     const payload = toConferencePayload(formValues);
     // Validation date : empêcher date antérieure à aujourd'hui
     const today = new Date();
-    today.setHours(0,0,0,0);
+    today.setHours(0, 0, 0, 0);
     const confDate = new Date(formValues.date);
     if (confDate < today) {
-      toast.error("La date de la conférence ne peut pas être antérieure à aujourd'hui.");
+      toast.error(
+        "La date de la conférence ne peut pas être antérieure à aujourd'hui.",
+      );
       return;
     }
     try {
@@ -168,7 +170,7 @@ export function AdminConferencesPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!globalThis.confirm("Supprimer cette conférence ?")) return;
+    if (!window.confirm("Supprimer cette conférence ?")) return;
     try {
       await conferencesApi.remove(id);
       if (selectedId === id) resetForm();
