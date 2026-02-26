@@ -1,0 +1,13 @@
+.wrapper {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.title {
+  margin: 0;
+}
+
+.loginLink {
+  color: #1d4ed8;
+  font-size: 0.9rem;
+}
