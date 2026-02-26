@@ -19,11 +19,26 @@ const emptyForm = {
 
 const getConferenceId = (conference) => conference?.id ?? conference?._id;
 
-const splitList = (str) =>
+// "Alice Martin, Bob" => [{firstname:"Alice",lastname:"Martin"},{firstname:"Bob",lastname:"-"}]
+const parsePerson = (str) => {
+  const parts = str.trim().split(/\s+/);
+  const firstname = parts[0] ?? "";
+  const lastname = parts.slice(1).join(" ") || "-";
+  return { firstname, lastname };
+};
+
+const parsePersonList = (str) =>
   str
     .split(",")
     .map((s) => s.trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    .map(parsePerson);
+
+// [{firstname:"Alice",lastname:"Martin"}] => "Alice Martin"
+const personToString = (p) =>
+  typeof p === "string"
+    ? p
+    : `${p?.firstname ?? ""} ${p?.lastname ?? ""}`.trim();
 
 const toConferencePayload = (formValues) => ({
   title: formValues.title,
@@ -32,8 +47,8 @@ const toConferencePayload = (formValues) => ({
   img: formValues.img,
   content: formValues.content,
   duration: formValues.duration,
-  speakers: splitList(formValues.speakers),
-  stakeholders: splitList(formValues.stakeholders),
+  speakers: parsePersonList(formValues.speakers),
+  stakeholders: parsePersonList(formValues.stakeholders),
   design: {
     mainColor: formValues.mainColor,
     secondColor: formValues.secondColor,
@@ -112,8 +127,10 @@ export function AdminConferencesPage() {
       img: conference?.img ?? "",
       content: conference?.content ?? "",
       duration: conference?.duration ?? "",
-      speakers: (conference?.speakers ?? []).join(", "),
-      stakeholders: (conference?.stakeholders ?? []).join(", "),
+      speakers: (conference?.speakers ?? []).map(personToString).join(", "),
+      stakeholders: (conference?.stakeholders ?? [])
+        .map(personToString)
+        .join(", "),
       mainColor: conference?.design?.mainColor ?? "#ffffff",
       secondColor: conference?.design?.secondColor ?? "#0f172a",
     });
@@ -262,7 +279,7 @@ export function AdminConferencesPage() {
               placeholder="Ex : Alice Martin, Bob Dupont"
             />
             <span className={styles.hint}>
-              Separez les noms par des virgules
+              Format : Prenom Nom, separes par des virgules
             </span>
           </div>
           <div className={styles.field}>
@@ -275,10 +292,10 @@ export function AdminConferencesPage() {
               className={styles.input}
               value={formValues.stakeholders}
               onChange={handleFieldChange}
-              placeholder="Ex : Google, AWS"
+              placeholder="Ex : OpenAI France, Google Cloud"
             />
             <span className={styles.hint}>
-              Separez les noms par des virgules
+              Format : Prenom Nom (ou Societe), separes par des virgules
             </span>
           </div>
         </div>
