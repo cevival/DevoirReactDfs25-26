@@ -25,7 +25,6 @@ export function RegisterPage() {
       await login(id, password);
       navigate(ROUTES.HOME, { replace: true });
       // toast.error déjà affiché par RegisterForm
-    } finally {
     } catch (err) {
       // toast.error déjà affiché par RegisterForm
       console.error(err);

@@ -24,7 +24,6 @@ export function LoginPage() {
       toast.success("Connexion réussie !");
       navigate(ROUTES.HOME, { replace: true });
       // toast.error déjà affiché par LoginForm
-    } finally {
     } catch (err) {
       // toast.error déjà affiché par LoginForm
       console.error(err);
