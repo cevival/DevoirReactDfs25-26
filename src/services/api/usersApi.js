@@ -23,11 +23,16 @@ export const usersApi = {
 
   async promoteToAdmin(id) {
     const response = await apiClient.patch(
-      `/usertype?id=${encodeURIComponent(id)}`,
+      `/usertype/${encodeURIComponent(id)}`,
       {
         newType: "admin",
       },
     );
+    return response.data;
+  },
+
+  async deleteUser(id) {
+    const response = await apiClient.delete(`/user/${encodeURIComponent(id)}`);
     return response.data;
   },
 };
