@@ -8,7 +8,7 @@ export const conferencesApi = {
 
   async getById(id) {
     const response = await apiClient.get(`/conference/${id}`);
-    return response.data?.conference ?? null;
+    return response.data ?? null;
   },
 
   async create(conference) {
