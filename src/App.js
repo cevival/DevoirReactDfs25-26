@@ -1,24 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { Navigate, Route, Routes } from "react-router-dom";
+import { MainLayout, ProtectedRoute } from "./components";
+import {
+  AdminConferencesPage,
+  AdminUsersPage,
+  ConferenceDetailPage,
+  HomePage,
+  LoginPage,
+  NotFoundPage,
+} from "./pages";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MainLayout>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/conference/:id" element={<ConferenceDetailPage />} />
+        <Route path="/login" element={<LoginPage />} />
+
+        <Route
+          path="/admin/conferences"
+          element={
+            <ProtectedRoute requireAdmin>
+              <AdminConferencesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute requireAdmin>
+              <AdminUsersPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/home" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </MainLayout>
   );
 }
 
