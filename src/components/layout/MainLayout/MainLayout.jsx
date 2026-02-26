@@ -35,9 +35,14 @@ export function MainLayout({ children }) {
               </button>
             </>
           ) : (
-            <Link className={styles.link} to={ROUTES.LOGIN}>
-              Connexion
-            </Link>
+            <>
+              <Link className={styles.link} to={ROUTES.LOGIN}>
+                Connexion
+              </Link>
+              <Link className={styles.link} to={ROUTES.REGISTER}>
+                Inscription
+              </Link>
+            </>
           )}
         </div>
       </header>

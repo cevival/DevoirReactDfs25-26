@@ -7,6 +7,7 @@ import {
   HomePage,
   LoginPage,
   NotFoundPage,
+  RegisterPage,
 } from "./pages";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/conference/:id" element={<ConferenceDetailPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
         <Route
           path="/admin/conferences"

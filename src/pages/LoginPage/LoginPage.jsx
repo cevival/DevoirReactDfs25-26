@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { LoginForm } from "../../components";
 import { ROUTES } from "../../constants/routes";
 import { useAuth } from "../../hooks";
@@ -31,6 +31,9 @@ export function LoginPage() {
     <section className={styles.wrapper}>
       <h1 className={styles.title}>Connexion</h1>
       <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
+      <p>
+        Pas encore de compte ? <Link to={ROUTES.REGISTER}>Créer un compte</Link>
+      </p>
     </section>
   );
 }
