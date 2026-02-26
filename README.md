@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# TP React - Gestion de conférences
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Application React connectée à l’API REST locale `http://localhost:4555`.
 
-## Available Scripts
+## Fonctionnalités
 
-In the project directory, you can run:
+- Consultation des conférences (liste + fiche détaillée)
+- Connexion utilisateur
+- Accès administrateur protégé
+- CRUD conférences (admin)
+- Gestion utilisateurs + promotion admin (admin)
 
-### `npm start`
+## Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React (Create React App)
+- Axios
+- React Router DOM v6
+- CSS Modules
+- Architecture par features + fichiers barrel (`index.js`)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Lancement
 
-### `npm test`
+### 1) API (Docker)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+docker compose up -d
+```
 
-### `npm run build`
+API: `http://localhost:4555`  
+Mongo Express: `http://localhost:9555`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 2) Frontend
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm install
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+App: `http://localhost:3000`
 
-### `npm run eject`
+## Scripts
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm test -- --watchAll=false
+npm run build
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Structure principale
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```text
+src/
+	components/
+		features/
+		layout/
+		routing/
+	constants/
+	context/
+	hooks/
+	pages/
+	services/api/
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Notes Auth
 
-## Learn More
+- Le token JWT est stocké dans `localStorage` (`authToken`)
+- Les appels protégés utilisent `Authorization: Bearer <token>`
+- Le rôle admin est vérifié via `GET /isadmin`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Workflow Git (proposé)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Branche de feature: `feature/core-architecture`
+- Branche documentation: `docs/tp-readme`
+- Commits atomiques par domaine fonctionnel
