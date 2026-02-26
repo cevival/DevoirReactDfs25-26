@@ -18,17 +18,15 @@ export const conferencesApi = {
 
   async update(id, conference) {
     const response = await apiClient.patch(
-      `/conference?id=${encodeURIComponent(id)}`,
-      {
-        conference,
-      },
+      `/conference/${encodeURIComponent(id)}`,
+      { conference },
     );
     return response.data;
   },
 
   async remove(id) {
     const response = await apiClient.delete(
-      `/conference?id=${encodeURIComponent(id)}`,
+      `/conference/${encodeURIComponent(id)}`,
     );
     return response.data;
   },

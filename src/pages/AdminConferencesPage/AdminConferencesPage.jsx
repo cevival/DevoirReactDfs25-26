@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { conferencesApi } from "../../services/api";
 import styles from "./AdminConferencesPage.module.css";
 
@@ -110,26 +110,41 @@ export function AdminConferencesPage() {
 
   return (
     <section className={styles.layout}>
-      <h1 className={styles.title}>Administration des conférences</h1>
+      <h1 className={styles.pageTitle}>
+        Admin â€” <span>ConfÃ©rences</span>
+      </h1>
 
+      {/* â”€â”€ Formulaire crÃ©ation / Ã©dition â”€â”€ */}
       <form className={styles.panel} onSubmit={handleSubmit}>
+        <h2 className={styles.panelTitle}>
+          {selectedId ? "Modifier la confÃ©rence" : "Ajouter une confÃ©rence"}
+        </h2>
+
+        {editingConference && (
+          <div className={styles.editingBanner}>
+            âœï¸ Ã‰dition en cours :&nbsp;<strong>{editingConference.title}</strong>
+          </div>
+        )}
+
         <div className={styles.grid}>
           <div className={styles.field}>
-            <label htmlFor="title">Titre</label>
+            <label className={styles.label} htmlFor="title">Titre</label>
             <input
               id="title"
               name="title"
               className={styles.input}
               value={formValues.title}
               onChange={handleFieldChange}
+              placeholder="Ex : IA & Futur du Travail"
               required
             />
           </div>
           <div className={styles.field}>
-            <label htmlFor="date">Date</label>
+            <label className={styles.label} htmlFor="date">Date</label>
             <input
               id="date"
               name="date"
+              type="date"
               className={styles.input}
               value={formValues.date}
               onChange={handleFieldChange}
@@ -137,79 +152,87 @@ export function AdminConferencesPage() {
             />
           </div>
           <div className={styles.field}>
-            <label htmlFor="duration">Durée</label>
+            <label className={styles.label} htmlFor="duration">DurÃ©e</label>
             <input
               id="duration"
               name="duration"
               className={styles.input}
               value={formValues.duration}
               onChange={handleFieldChange}
+              placeholder="Ex : 2h30"
             />
           </div>
           <div className={styles.field}>
-            <label htmlFor="img">Image (URL)</label>
+            <label className={styles.label} htmlFor="img">Image (URL)</label>
             <input
               id="img"
               name="img"
               className={styles.input}
               value={formValues.img}
               onChange={handleFieldChange}
+              placeholder="https://â€¦"
               required
             />
           </div>
           <div className={styles.field}>
-            <label htmlFor="mainColor">Couleur principale</label>
-            <input
-              id="mainColor"
-              name="mainColor"
-              type="color"
-              className={styles.input}
-              value={formValues.mainColor}
-              onChange={handleFieldChange}
-              required
-            />
+            <label className={styles.label} htmlFor="mainColor">Couleur principale</label>
+            <div className={styles.colorWrapper}>
+              <input
+                id="mainColor"
+                name="mainColor"
+                type="color"
+                className={styles.colorInput}
+                value={formValues.mainColor}
+                onChange={handleFieldChange}
+              />
+              <span className={styles.colorValue}>{formValues.mainColor}</span>
+            </div>
           </div>
           <div className={styles.field}>
-            <label htmlFor="secondColor">Couleur secondaire</label>
-            <input
-              id="secondColor"
-              name="secondColor"
-              type="color"
-              className={styles.input}
-              value={formValues.secondColor}
-              onChange={handleFieldChange}
-              required
-            />
+            <label className={styles.label} htmlFor="secondColor">Couleur secondaire</label>
+            <div className={styles.colorWrapper}>
+              <input
+                id="secondColor"
+                name="secondColor"
+                type="color"
+                className={styles.colorInput}
+                value={formValues.secondColor}
+                onChange={handleFieldChange}
+              />
+              <span className={styles.colorValue}>{formValues.secondColor}</span>
+            </div>
           </div>
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="description">Description</label>
+          <label className={styles.label} htmlFor="description">Description courte</label>
           <textarea
             id="description"
             name="description"
             className={styles.textarea}
             value={formValues.description}
             onChange={handleFieldChange}
+            placeholder="RÃ©sumÃ© en quelques phrasesâ€¦"
             required
           />
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="content">Contenu</label>
+          <label className={styles.label} htmlFor="content">Contenu dÃ©taillÃ©</label>
           <textarea
             id="content"
             name="content"
             className={styles.textarea}
             value={formValues.content}
             onChange={handleFieldChange}
+            placeholder="Description complÃ¨te de la confÃ©renceâ€¦"
             required
           />
         </div>
 
-        <div className={styles.actions}>
+        <div className={styles.formActions}>
           <button className={styles.button} type="submit">
-            {selectedId ? "Mettre à jour" : "Créer la conférence"}
+            {selectedId ? "âœ“ Mettre Ã  jour" : "+ CrÃ©er la confÃ©rence"}
           </button>
           {selectedId && (
             <button
@@ -217,38 +240,76 @@ export function AdminConferencesPage() {
               type="button"
               onClick={resetForm}
             >
-              Annuler l’édition
+              Annuler
             </button>
           )}
         </div>
       </form>
 
+      {/* â”€â”€ Liste des confÃ©rences existantes â”€â”€ */}
       <section className={styles.panel}>
-        <h2>Conférences existantes</h2>
+        <div className={styles.listHeader}>
+          <h2 className={styles.panelTitle} style={{ margin: 0, border: 0, padding: 0 }}>
+            ConfÃ©rences existantes
+          </h2>
+          {!isLoading && (
+            <span className={styles.countBadge}>
+              {conferences.length} confÃ©rence{conferences.length !== 1 ? "s" : ""}
+            </span>
+          )}
+        </div>
 
-        {isLoading ? <p>Chargement...</p> : null}
+        {isLoading && <p className={styles.loading}>Chargementâ€¦</p>}
 
-        {!isLoading && conferences.length === 0 ? (
-          <p>Aucune conférence.</p>
-        ) : null}
+        {!isLoading && conferences.length === 0 && (
+          <div className={styles.empty}>Aucune confÃ©rence pour le moment.</div>
+        )}
 
         <ul className={styles.list}>
           {conferences.map((conference) => {
             const id = getConferenceId(conference);
+            const isEditing = selectedId === id;
 
             return (
-              <li key={id} className={styles.item}>
-                <div>
-                  <strong>{conference.title}</strong>
-                  <div>{conference.date}</div>
+              <li
+                key={id}
+                className={`${styles.item} ${isEditing ? styles.itemEditing : ""}`}
+              >
+                {conference.img ? (
+                  <img
+                    className={styles.itemThumb}
+                    src={conference.img}
+                    alt=""
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className={styles.itemThumbPlaceholder}>ðŸŽ¤</div>
+                )}
+
+                <div className={styles.itemInfo}>
+                  <div className={styles.itemTitle}>{conference.title}</div>
+                  <div className={styles.itemMeta}>
+                    <span>ðŸ“… {conference.date}</span>
+                    {conference.duration && <span>â± {conference.duration}</span>}
+                    <span>
+                      <span
+                        className={styles.colorDot}
+                        style={{
+                          backgroundColor: conference?.design?.mainColor ?? "#7c3aed",
+                        }}
+                      />
+                      {conference?.design?.mainColor ?? "â€”"}
+                    </span>
+                  </div>
                 </div>
-                <div className={styles.actions}>
+
+                <div className={styles.itemActions}>
                   <button
                     type="button"
                     className={styles.secondary}
                     onClick={() => loadConferenceIntoForm(conference)}
                   >
-                    Éditer
+                    Ã‰diter
                   </button>
                   <button
                     type="button"
@@ -263,10 +324,6 @@ export function AdminConferencesPage() {
           })}
         </ul>
       </section>
-
-      {editingConference ? (
-        <p>Édition en cours : {editingConference.title}</p>
-      ) : null}
     </section>
   );
 }
