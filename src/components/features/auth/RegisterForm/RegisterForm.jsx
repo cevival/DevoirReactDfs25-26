@@ -28,7 +28,7 @@ export function RegisterForm({ onSubmit, isLoading }) {
     } catch (err) {
       toast.error(
         err?.response?.data?.message ??
-          "Inscription impossible. Cet identifiant est peut-être déjà pris."
+          "Inscription impossible. Cet identifiant est peut-être déjà pris.",
       );
       throw err;
     }

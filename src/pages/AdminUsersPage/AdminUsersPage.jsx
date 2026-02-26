@@ -37,7 +37,7 @@ export function AdminUsersPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm(`Supprimer l'utilisateur « ${id} » ?`)) return;
+    if (!globalThis.confirm(`Supprimer l'utilisateur « ${id} » ?`)) return;
     setActionLoading(id + "_delete");
     try {
       await usersApi.deleteUser(id);
@@ -53,7 +53,7 @@ export function AdminUsersPage() {
       <div className={styles.header}>
         <h1 className={styles.title}>Utilisateurs</h1>
         <span className={styles.count}>
-          {users.length} membre{users.length !== 1 ? "s" : ""}
+          {users.length} membre{users.length === 1 ? "" : "s"}
         </span>
       </div>
 

@@ -1,73 +1,69 @@
-# TP React - Gestion de conférences
+# NexTalk – Gestionnaire de conférences
 
-Application React connectée à l’API REST locale `http://localhost:4555`.
+## Présentation
 
-## Fonctionnalités
+NexTalk est une application web de gestion de conférences, développée en React (frontend) et Node.js/Express/MongoDB (backend). Elle permet la gestion, l’inscription et l’administration de conférences techniques.
 
-- Consultation des conférences (liste + fiche détaillée)
-- Connexion utilisateur
-- Accès administrateur protégé
-- CRUD conférences (admin)
-- Gestion utilisateurs + promotion admin (admin)
+## Fonctionnalités principales
 
-## Stack
+- Authentification (admin/utilisateur)
+- Gestion des conférences (CRUD, admin)
+- Gestion des utilisateurs (admin)
+- Inscription à une conférence
+- Notifications Toast
+- Interface responsive et moderne
 
-- React (Create React App)
-- Axios
-- React Router DOM v6
-- CSS Modules
-- Architecture par features + fichiers barrel (`index.js`)
+## Comptes de test
 
-## Lancement
+- **Admin** : `admin` / `toto`
+- **Utilisateur** : `user` / `toto`
 
-### 1) API (Docker)
+## Installation rapide
 
-```bash
-docker compose up -d
-```
+1. **Cloner le projet**
+2. **Installer les dépendances**
 
-API: `http://localhost:4555`  
-Mongo Express: `http://localhost:9555`
+   ```sh
+   npm install
+   ```
 
-### 2) Frontend
+3. **Configurer la base MongoDB**
+   - Lancer MongoDB (local ou Docker)
+   - Modifier l’URL de connexion si besoin dans le backend
 
-```bash
-npm install
-npm start
-```
+4. **Seed de la base**
+   - Les données de test sont dans `mongo-seed.js` (ou via `users.json` et `conferences.json`)
+   - Pour injecter la seed :
 
-App: `http://localhost:3000`
+   ```sh
+   node mongo-seed.js
+   ```
 
-## Scripts
+   - Ou avec mongoimport :
 
-```bash
-npm test -- --watchAll=false
-npm run build
-```
+   ```sh
+   mongoimport --uri "mongodb://localhost:27017/nom_de_ta_bdd" --collection users --file ./users.json
+   mongoimport --uri "mongodb://localhost:27017/nom_de_ta_bdd" --collection conferences --file ./conferences.json
+   ```
 
-## Structure principale
+5. **Lancer l’application**
 
-```text
-src/
-	components/
-		features/
-		layout/
-		routing/
-	constants/
-	context/
-	hooks/
-	pages/
-	services/api/
-```
+   ```sh
+   npm start
+   ```
 
-## Notes Auth
+## Structure du projet
 
-- Le token JWT est stocké dans `localStorage` (`authToken`)
-- Les appels protégés utilisent `Authorization: Bearer <token>`
-- Le rôle admin est vérifié via `GET /isadmin`
+- `src/` : code React
+  - `components/` : composants réutilisables
+  - `features/` : logique métier par fonctionnalité
+  - `hooks/` : hooks personnalisés (ex : useToast)
+  - `pages/` : pages principales (Login, Admin, etc.)
+- `mongo-seed.js` : script d’initialisation MongoDB
+- `users.json`, `conferences.json` : exports de données
+- `docker-compose.yml` : stack Docker (optionnel)
 
-## Workflow Git (proposé)
+## Scripts utiles
 
-- Branche de feature: `feature/core-architecture`
-- Branche documentation: `docs/tp-readme`
-- Commits atomiques par domaine fonctionnel
+- `npm start` : démarre le frontend
+- `node mongo-seed.js` : injecte la seed

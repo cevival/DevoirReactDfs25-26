@@ -23,8 +23,11 @@ export function LoginPage() {
       await login(id, password);
       toast.success("Connexion réussie !");
       navigate(ROUTES.HOME, { replace: true });
+      // toast.error déjà affiché par LoginForm
+    } finally {
     } catch (err) {
       // toast.error déjà affiché par LoginForm
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
@@ -35,6 +38,24 @@ export function LoginPage() {
       <div className={styles.card}>
         <section className={styles.wrapper}>
           <h1 className={styles.title}>Connexion</h1>
+          <div
+            className={styles.testUsers}
+            style={{
+              marginBottom: 16,
+              background: "#f3f4f6",
+              borderRadius: 8,
+              padding: "12px 16px",
+              fontSize: "0.95em",
+            }}
+          >
+            <strong>Comptes de test :</strong>
+            <br />
+            <span style={{ color: "#2563eb" }}>admin</span> /{" "}
+            <span style={{ color: "#059669" }}>toto</span>
+            <br />
+            <span style={{ color: "#2563eb" }}>user</span> /{" "}
+            <span style={{ color: "#059669" }}>toto</span>
+          </div>
           <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
           <p className={styles.registerLink}>
             Pas encore de compte ?{" "}

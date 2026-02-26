@@ -80,7 +80,7 @@ export function HomePage() {
           <h2 className={styles.title}>Prochaines conférences</h2>
           {!isLoading && (
             <span className={styles.countBadge}>
-              {filtered.length} conférence{filtered.length !== 1 ? "s" : ""}
+              {filtered.length} conférence{filtered.length === 1 ? "" : "s"}
             </span>
           )}
         </div>

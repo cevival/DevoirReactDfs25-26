@@ -24,8 +24,11 @@ export function RegisterPage() {
       // Auto-connect after successful registration
       await login(id, password);
       navigate(ROUTES.HOME, { replace: true });
+      // toast.error déjà affiché par RegisterForm
+    } finally {
     } catch (err) {
       // toast.error déjà affiché par RegisterForm
+      console.error(err);
     } finally {
       setIsLoading(false);
     }

@@ -160,7 +160,7 @@ export function AdminConferencesPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Supprimer cette conférence ?")) return;
+    if (!globalThis.confirm("Supprimer cette conférence ?")) return;
     try {
       await conferencesApi.remove(id);
       if (selectedId === id) resetForm();
