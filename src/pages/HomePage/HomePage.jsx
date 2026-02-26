@@ -134,7 +134,6 @@ export function HomePage() {
           </div>
         </div>
 
-
         <div className={styles.grid}>
           {isLoading && (
             <p className={styles.loading}>Chargement des conférences…</p>
@@ -157,10 +156,12 @@ export function HomePage() {
               )}
             </div>
           )}
-          {!isLoading && filtered.length > 0 && paginated.map((conference) => {
-            const key = conference?.id ?? conference?._id;
-            return <ConferenceCard key={key} conference={conference} />;
-          })}
+          {!isLoading &&
+            filtered.length > 0 &&
+            paginated.map((conference) => {
+              const key = conference?.id ?? conference?._id;
+              return <ConferenceCard key={key} conference={conference} />;
+            })}
         </div>
 
         {/* Pagination */}
