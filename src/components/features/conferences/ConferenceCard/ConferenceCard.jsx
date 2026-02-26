@@ -14,6 +14,8 @@ export function ConferenceCard({ conference }) {
           className={styles.cover}
           src={conference.img}
           alt={conference.title}
+          loading="lazy"
+          decoding="async"
         />
       )}
       <div className={styles.body}>

@@ -98,7 +98,14 @@
 }
 
 .main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
   width: min(1200px, 96%);
+  max-width: 1200px;
+  padding: 2rem 1.5rem 3rem;
   margin: 0 auto;
-  padding: 2rem 0 3rem;
 }
