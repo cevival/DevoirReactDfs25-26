@@ -33,6 +33,9 @@ export function ConferenceDetailPage() {
     return <div className={styles.error}>Conférence introuvable.</div>;
   }
 
+  const mainColor = conference?.design?.mainColor ?? "#7c3aed";
+  const secondColor = conference?.design?.secondColor ?? "#ede9fe";
+
   return (
     <div className={styles.container}>
       <article className={styles.card}>
@@ -43,15 +46,24 @@ export function ConferenceDetailPage() {
               src={conference.img}
               alt={conference.title}
             />
-            <div className={styles.overlay}>
-              <h1 className={styles.title}>{conference.title}</h1>
+            <div
+              className={styles.overlay}
+              style={{
+                background: `linear-gradient(to top, ${mainColor}dd 0%, transparent 100%)`,
+              }}
+            >
+              <h1 className={styles.title} style={{ color: secondColor }}>
+                {conference.title}
+              </h1>
             </div>
           </div>
         )}
 
         <div className={styles.content}>
           {!conference.img && (
-            <h1 className={styles.title}>{conference.title}</h1>
+            <h1 className={styles.title} style={{ color: mainColor }}>
+              {conference.title}
+            </h1>
           )}
 
           <p className={styles.meta}>
@@ -61,16 +73,27 @@ export function ConferenceDetailPage() {
           <p className={styles.description}>{conference.description}</p>
 
           <section className={styles.block}>
-            <h2 className={styles.blockTitle}>Contenu</h2>
+            <h2
+              className={styles.blockTitle}
+              style={{ color: mainColor, borderBottomColor: `${mainColor}55` }}
+            >
+              Contenu
+            </h2>
             <p className={styles.contentText}>{conference.content}</p>
           </section>
 
           <section className={styles.block}>
-            <h2 className={styles.blockTitle}>Intervenants</h2>
+            <h2
+              className={styles.blockTitle}
+              style={{ color: mainColor, borderBottomColor: `${mainColor}55` }}
+            >
+              Intervenants
+            </h2>
             <ul className={styles.list}>
               {toArray(conference.speakers).map((speaker, index) => (
                 <li
                   className={styles.listItem}
+                  style={{ borderLeftColor: mainColor }}
                   key={`${speaker.firstname}-${speaker.lastname}-${index}`}
                 >
                   {speaker.firstname} {speaker.lastname}
@@ -80,11 +103,17 @@ export function ConferenceDetailPage() {
           </section>
 
           <section className={styles.block}>
-            <h2 className={styles.blockTitle}>Partenaires</h2>
+            <h2
+              className={styles.blockTitle}
+              style={{ color: mainColor, borderBottomColor: `${mainColor}55` }}
+            >
+              Partenaires
+            </h2>
             <ul className={styles.list}>
               {toArray(conference.stakeholders).map((stakeholder, index) => (
                 <li
                   className={styles.listItem}
+                  style={{ borderLeftColor: mainColor }}
                   key={`${stakeholder.firstname}-${stakeholder.lastname}-${index}`}
                 >
                   {stakeholder.firstname} {stakeholder.lastname}{" "}

@@ -11,27 +11,31 @@
 
 .label {
   font-weight: 600;
-  color: #334155;
-  font-size: 0.95rem;
+  color: #c4b5fd;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
 }
 
 .input {
-  border: 2px solid #e2e8f0;
+  border: 1px solid rgba(124, 58, 237, 0.25);
   border-radius: 0.625rem;
   padding: 0.75rem 1rem;
   font-size: 1rem;
+  background: rgba(124, 58, 237, 0.05);
+  color: #e2e8f0;
   transition: all 0.2s ease;
 }
 
 .input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #7c3aed;
+  background: rgba(124, 58, 237, 0.1);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
 }
 
 .button {
   border: none;
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  background: #7c3aed;
   color: #ffffff;
   border-radius: 0.625rem;
   padding: 0.875rem 1rem;
@@ -43,17 +47,18 @@
 }
 
 .button:hover:not(:disabled) {
+  background: #6d28d9;
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4);
 }
 
 .button:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .error {
-  color: #dc2626;
+  color: #f87171;
   margin: 0;
   font-size: 0.9rem;
   font-weight: 500;
