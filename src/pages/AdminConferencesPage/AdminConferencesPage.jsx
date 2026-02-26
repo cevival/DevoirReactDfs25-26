@@ -1,6 +1,8 @@
-﻿import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { conferencesApi } from "../../services/api";
 import styles from "./AdminConferencesPage.module.css";
+
+const ITEMS_PER_PAGE = 8;
 
 const emptyForm = {
   title: "",
@@ -13,7 +15,7 @@ const emptyForm = {
   secondColor: "#0f172a",
 };
 
-const getConferenceId = (conference) => conference?.id ?? conference?._id;
+const getConferenceId = (conference) => conference?._id ?? conference?.id;
 
 const toConferencePayload = (formValues) => ({
   title: formValues.title,
@@ -35,6 +37,8 @@ export function AdminConferencesPage() {
   const [formValues, setFormValues] = useState(emptyForm);
   const [selectedId, setSelectedId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const editingConference = useMemo(
     () =>
@@ -46,7 +50,6 @@ export function AdminConferencesPage() {
 
   const loadConferences = async () => {
     setIsLoading(true);
-
     try {
       const data = await conferencesApi.getAll();
       setConferences(Array.isArray(data) ? data : []);
@@ -58,6 +61,29 @@ export function AdminConferencesPage() {
   useEffect(() => {
     loadConferences();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return conferences;
+    return conferences.filter(
+      (c) =>
+        (c.title ?? "").toLowerCase().includes(q) ||
+        (c.date ?? "").toLowerCase().includes(q) ||
+        (c._id ?? c.id ?? "").toLowerCase().includes(q),
+    );
+  }, [conferences, search]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+  const paginated = filtered.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE,
+  );
+
+  const goToPage = (page) => setCurrentPage(page);
 
   const handleFieldChange = (event) => {
     const { name, value } = event.target;
@@ -81,48 +107,42 @@ export function AdminConferencesPage() {
       mainColor: conference?.design?.mainColor ?? "#ffffff",
       secondColor: conference?.design?.secondColor ?? "#0f172a",
     });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const payload = toConferencePayload(formValues);
-
     if (selectedId) {
       await conferencesApi.update(selectedId, payload);
     } else {
       await conferencesApi.create(payload);
     }
-
     resetForm();
     await loadConferences();
   };
 
   const handleDelete = async (id) => {
+    if (!window.confirm("Supprimer cette conference ?")) return;
     await conferencesApi.remove(id);
-
-    if (selectedId === id) {
-      resetForm();
-    }
-
+    if (selectedId === id) resetForm();
     await loadConferences();
   };
 
   return (
     <section className={styles.layout}>
       <h1 className={styles.pageTitle}>
-        Admin â€” <span>ConfÃ©rences</span>
+        Admin <span>Conferences</span>
       </h1>
 
-      {/* â”€â”€ Formulaire crÃ©ation / Ã©dition â”€â”€ */}
       <form className={styles.panel} onSubmit={handleSubmit}>
         <h2 className={styles.panelTitle}>
-          {selectedId ? "Modifier la confÃ©rence" : "Ajouter une confÃ©rence"}
+          {selectedId ? "Modifier la conference" : "Ajouter une conference"}
         </h2>
 
         {editingConference && (
           <div className={styles.editingBanner}>
-            âœï¸ Ã‰dition en cours :&nbsp;<strong>{editingConference.title}</strong>
+            Edition en cours :&nbsp;<strong>{editingConference.title}</strong>
           </div>
         )}
 
@@ -152,7 +172,7 @@ export function AdminConferencesPage() {
             />
           </div>
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="duration">DurÃ©e</label>
+            <label className={styles.label} htmlFor="duration">Duree</label>
             <input
               id="duration"
               name="duration"
@@ -170,7 +190,7 @@ export function AdminConferencesPage() {
               className={styles.input}
               value={formValues.img}
               onChange={handleFieldChange}
-              placeholder="https://â€¦"
+              placeholder="https://..."
               required
             />
           </div>
@@ -212,61 +232,78 @@ export function AdminConferencesPage() {
             className={styles.textarea}
             value={formValues.description}
             onChange={handleFieldChange}
-            placeholder="RÃ©sumÃ© en quelques phrasesâ€¦"
+            placeholder="Resume en quelques phrases..."
             required
           />
         </div>
 
         <div className={styles.field}>
-          <label className={styles.label} htmlFor="content">Contenu dÃ©taillÃ©</label>
+          <label className={styles.label} htmlFor="content">Contenu detaille</label>
           <textarea
             id="content"
             name="content"
             className={styles.textarea}
             value={formValues.content}
             onChange={handleFieldChange}
-            placeholder="Description complÃ¨te de la confÃ©renceâ€¦"
+            placeholder="Description complete de la conference..."
             required
           />
         </div>
 
         <div className={styles.formActions}>
           <button className={styles.button} type="submit">
-            {selectedId ? "âœ“ Mettre Ã  jour" : "+ CrÃ©er la confÃ©rence"}
+            {selectedId ? "Mettre a jour" : "+ Creer la conference"}
           </button>
           {selectedId && (
-            <button
-              className={styles.secondary}
-              type="button"
-              onClick={resetForm}
-            >
+            <button className={styles.secondary} type="button" onClick={resetForm}>
               Annuler
             </button>
           )}
         </div>
       </form>
 
-      {/* â”€â”€ Liste des confÃ©rences existantes â”€â”€ */}
       <section className={styles.panel}>
         <div className={styles.listHeader}>
           <h2 className={styles.panelTitle} style={{ margin: 0, border: 0, padding: 0 }}>
-            ConfÃ©rences existantes
+            Conferences existantes
           </h2>
           {!isLoading && (
             <span className={styles.countBadge}>
-              {conferences.length} confÃ©rence{conferences.length !== 1 ? "s" : ""}
+              {filtered.length} / {conferences.length}
             </span>
           )}
         </div>
 
-        {isLoading && <p className={styles.loading}>Chargementâ€¦</p>}
+        <div className={styles.searchWrapper}>
+          <svg className={styles.searchIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          <input
+            className={styles.searchInput}
+            type="search"
+            placeholder="Rechercher par titre, date, _id..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            aria-label="Rechercher une conference"
+          />
+          {search && (
+            <button className={styles.clearBtn} onClick={() => setSearch("")} type="button">
+              x
+            </button>
+          )}
+        </div>
 
-        {!isLoading && conferences.length === 0 && (
-          <div className={styles.empty}>Aucune confÃ©rence pour le moment.</div>
+        {isLoading && <p className={styles.loading}>Chargement...</p>}
+
+        {!isLoading && filtered.length === 0 && (
+          <div className={styles.empty}>
+            {search ? `Aucun resultat pour "${search}".` : "Aucune conference pour le moment."}
+          </div>
         )}
 
         <ul className={styles.list}>
-          {conferences.map((conference) => {
+          {paginated.map((conference) => {
             const id = getConferenceId(conference);
             const isEditing = selectedId === id;
 
@@ -283,23 +320,15 @@ export function AdminConferencesPage() {
                     loading="lazy"
                   />
                 ) : (
-                  <div className={styles.itemThumbPlaceholder}>ðŸŽ¤</div>
+                  <div className={styles.itemThumbPlaceholder}>mic</div>
                 )}
 
                 <div className={styles.itemInfo}>
                   <div className={styles.itemTitle}>{conference.title}</div>
                   <div className={styles.itemMeta}>
-                    <span>ðŸ“… {conference.date}</span>
-                    {conference.duration && <span>â± {conference.duration}</span>}
-                    <span>
-                      <span
-                        className={styles.colorDot}
-                        style={{
-                          backgroundColor: conference?.design?.mainColor ?? "#7c3aed",
-                        }}
-                      />
-                      {conference?.design?.mainColor ?? "â€”"}
-                    </span>
+                    <span>{conference.date}</span>
+                    {conference.duration && <span>{conference.duration}</span>}
+                    <span className={styles.itemId}>{id}</span>
                   </div>
                 </div>
 
@@ -309,7 +338,7 @@ export function AdminConferencesPage() {
                     className={styles.secondary}
                     onClick={() => loadConferenceIntoForm(conference)}
                   >
-                    Ã‰diter
+                    Editer
                   </button>
                   <button
                     type="button"
@@ -323,6 +352,42 @@ export function AdminConferencesPage() {
             );
           })}
         </ul>
+
+        {totalPages > 1 && (
+          <nav className={styles.pagination} aria-label="Pagination">
+            <button
+              className={styles.pageBtn}
+              disabled={currentPage === 1}
+              onClick={() => goToPage(currentPage - 1)}
+            >
+              &larr;
+            </button>
+            <div className={styles.pageNumbers}>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  className={`${styles.pageBtn} ${currentPage === page ? styles.pageBtnActive : ""}`}
+                  onClick={() => goToPage(page)}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+            <button
+              className={styles.pageBtn}
+              disabled={currentPage === totalPages}
+              onClick={() => goToPage(currentPage + 1)}
+            >
+              &rarr;
+            </button>
+          </nav>
+        )}
+
+        {!isLoading && filtered.length > 0 && totalPages > 1 && (
+          <p className={styles.pageInfo}>
+            Page {currentPage} / {totalPages}
+          </p>
+        )}
       </section>
     </section>
   );
