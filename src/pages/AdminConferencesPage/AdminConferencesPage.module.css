@@ -1,0 +1,88 @@
+.layout {
+  display: grid;
+  gap: 1rem;
+}
+
+.title {
+  margin: 0;
+}
+
+.panel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.grid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.input,
+.textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.65rem;
+}
+
+.textarea {
+  min-height: 92px;
+  resize: vertical;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.button {
+  border: none;
+  background: #1d4ed8;
+  color: #ffffff;
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.8rem;
+  cursor: pointer;
+}
+
+.secondary {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.8rem;
+  cursor: pointer;
+}
+
+.danger {
+  border: none;
+  background: #b91c1c;
+  color: #ffffff;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  cursor: pointer;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.item {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.6rem;
+  padding: 0.7rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.7rem;
+}
