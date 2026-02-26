@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { LoginForm } from "../../components";
 import { ROUTES } from "../../constants/routes";
-import { useAuth } from "../../hooks";
+import { useAuth, useToast } from "../../hooks";
 import styles from "./LoginPage.module.css";
 
 export function LoginPage() {
   const navigate = useNavigate();
   const { login, isAuthenticated, isAdmin } = useAuth();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   if (isAuthenticated) {
@@ -18,10 +19,12 @@ export function LoginPage() {
 
   const handleLogin = async (id, password) => {
     setIsLoading(true);
-
     try {
       await login(id, password);
+      toast.success("Connexion réussie !");
       navigate(ROUTES.HOME, { replace: true });
+    } catch (err) {
+      // toast.error déjà affiché par LoginForm
     } finally {
       setIsLoading(false);
     }

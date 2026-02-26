@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 import { usersApi } from "../../services/api";
+import { useToast } from "../../hooks";
 import styles from "./AdminUsersPage.module.css";
 
 export function AdminUsersPage() {
+  const { toast } = useToast();
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(null);
-  const [error, setError] = useState("");
 
   const loadUsers = async () => {
     setIsLoading(true);
-    setError("");
     try {
       const data = await usersApi.getAll();
       setUsers(Array.isArray(data) ? data : []);
     } catch {
-      setError("Impossible de charger les utilisateurs.");
+      toast.error("Impossible de charger les utilisateurs.");
     } finally {
       setIsLoading(false);
     }
@@ -27,12 +27,10 @@ export function AdminUsersPage() {
 
   const handlePromote = async (id) => {
     setActionLoading(id + "_promote");
-    setError("");
     try {
       await usersApi.promoteToAdmin(id);
       await loadUsers();
     } catch {
-      setError(`Échec de la promotion de « ${id} ».`);
     } finally {
       setActionLoading(null);
     }
@@ -41,12 +39,10 @@ export function AdminUsersPage() {
   const handleDelete = async (id) => {
     if (!window.confirm(`Supprimer l'utilisateur « ${id} » ?`)) return;
     setActionLoading(id + "_delete");
-    setError("");
     try {
       await usersApi.deleteUser(id);
       await loadUsers();
     } catch {
-      setError(`Échec de la suppression de « ${id} ».`);
     } finally {
       setActionLoading(null);
     }
@@ -61,7 +57,6 @@ export function AdminUsersPage() {
         </span>
       </div>
 
-      {error && <p className={styles.error}>{error}</p>}
       {isLoading && <p className={styles.loading}>Chargement...</p>}
 
       <ul className={styles.list}>

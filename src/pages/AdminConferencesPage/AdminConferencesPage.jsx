@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { conferencesApi } from "../../services/api";
+import { useToast } from "../../hooks";
 import styles from "./AdminConferencesPage.module.css";
 
 const ITEMS_PER_PAGE = 8;
@@ -56,6 +57,7 @@ const toConferencePayload = (formValues) => ({
 });
 
 export function AdminConferencesPage() {
+  const { toast } = useToast();
   const [conferences, setConferences] = useState([]);
   const [formValues, setFormValues] = useState(emptyForm);
   const [selectedId, setSelectedId] = useState(null);
@@ -140,20 +142,35 @@ export function AdminConferencesPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const payload = toConferencePayload(formValues);
-    if (selectedId) {
-      await conferencesApi.update(selectedId, payload);
-    } else {
-      await conferencesApi.create(payload);
+    try {
+      if (selectedId) {
+        await conferencesApi.update(selectedId, payload);
+        toast.success("Conférence mise à jour avec succès !");
+      } else {
+        await conferencesApi.create(payload);
+        toast.success("Conférence créée avec succès !");
+      }
+      resetForm();
+      await loadConferences();
+    } catch (err) {
+      const msg =
+        err?.response?.data?.message ?? err?.message ?? "Erreur inconnue";
+      toast.error(`Échec de la sauvegarde : ${msg}`);
     }
-    resetForm();
-    await loadConferences();
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Supprimer cette conference ?")) return;
-    await conferencesApi.remove(id);
-    if (selectedId === id) resetForm();
-    await loadConferences();
+    if (!window.confirm("Supprimer cette conférence ?")) return;
+    try {
+      await conferencesApi.remove(id);
+      if (selectedId === id) resetForm();
+      await loadConferences();
+      toast.success("Conférence supprimée.");
+    } catch (err) {
+      const msg =
+        err?.response?.data?.message ?? err?.message ?? "Erreur inconnue";
+      toast.error(`Échec de la suppression : ${msg}`);
+    }
   };
 
   return (

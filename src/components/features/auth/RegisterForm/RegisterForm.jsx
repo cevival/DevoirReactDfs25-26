@@ -1,39 +1,36 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { useToast } from "../../../../hooks";
 import styles from "./RegisterForm.module.css";
 
 export function RegisterForm({ onSubmit, isLoading }) {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [error, setError] = useState("");
+  const { toast } = useToast();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError("");
-
     if (!id.trim() || !password.trim()) {
-      setError("Identifiant et mot de passe sont requis.");
+      toast.error("Identifiant et mot de passe sont requis.");
       return;
     }
-
     if (password !== confirm) {
-      setError("Les mots de passe ne correspondent pas.");
+      toast.error("Les mots de passe ne correspondent pas.");
       return;
     }
-
     if (password.length < 4) {
-      setError("Le mot de passe doit contenir au moins 4 caractères.");
+      toast.error("Le mot de passe doit contenir au moins 4 caractères.");
       return;
     }
-
     try {
       await onSubmit(id.trim(), password);
     } catch (err) {
-      setError(
+      toast.error(
         err?.response?.data?.message ??
-          "Inscription impossible. Cet identifiant est peut-être déjà pris.",
+          "Inscription impossible. Cet identifiant est peut-être déjà pris."
       );
+      throw err;
     }
   };
 
@@ -80,8 +77,6 @@ export function RegisterForm({ onSubmit, isLoading }) {
           onChange={(event) => setConfirm(event.target.value)}
         />
       </div>
-
-      {error && <p className={styles.error}>{error}</p>}
 
       <button className={styles.button} type="submit" disabled={isLoading}>
         {isLoading ? "Inscription..." : "Créer le compte"}

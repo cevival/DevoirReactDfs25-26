@@ -1,25 +1,27 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { useToast } from "../../../../hooks";
 import styles from "./LoginForm.module.css";
 
 export function LoginForm({ onSubmit, isLoading }) {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const { toast } = useToast();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError("");
-
     if (!id.trim() || !password.trim()) {
-      setError("Identifiant et mot de passe sont requis.");
+      toast.error("Identifiant et mot de passe sont requis.");
       return;
     }
-
     try {
       await onSubmit(id.trim(), password);
-    } catch {
-      setError("Connexion impossible, vérifie tes identifiants.");
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.message ||
+          "Connexion impossible, vérifie tes identifiants.",
+      );
+      throw err;
     }
   };
 
@@ -50,7 +52,6 @@ export function LoginForm({ onSubmit, isLoading }) {
         />
       </div>
 
-      {error && <p className={styles.error}>{error}</p>}
       <button className={styles.button} type="submit" disabled={isLoading}>
         {isLoading ? "Connexion..." : "Se connecter"}
       </button>
