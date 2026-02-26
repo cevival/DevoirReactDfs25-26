@@ -11,11 +11,19 @@ const emptyForm = {
   img: "",
   content: "",
   duration: "",
+  speakers: "",
+  stakeholders: "",
   mainColor: "#ffffff",
   secondColor: "#0f172a",
 };
 
 const getConferenceId = (conference) => conference?._id ?? conference?.id;
+
+const splitList = (str) =>
+  str
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 
 const toConferencePayload = (formValues) => ({
   title: formValues.title,
@@ -24,8 +32,8 @@ const toConferencePayload = (formValues) => ({
   img: formValues.img,
   content: formValues.content,
   duration: formValues.duration,
-  speakers: [],
-  stakeholders: [],
+  speakers: splitList(formValues.speakers),
+  stakeholders: splitList(formValues.stakeholders),
   design: {
     mainColor: formValues.mainColor,
     secondColor: formValues.secondColor,
@@ -104,6 +112,8 @@ export function AdminConferencesPage() {
       img: conference?.img ?? "",
       content: conference?.content ?? "",
       duration: conference?.duration ?? "",
+      speakers: (conference?.speakers ?? []).join(", "),
+      stakeholders: (conference?.stakeholders ?? []).join(", "),
       mainColor: conference?.design?.mainColor ?? "#ffffff",
       secondColor: conference?.design?.secondColor ?? "#0f172a",
     });
@@ -148,7 +158,9 @@ export function AdminConferencesPage() {
 
         <div className={styles.grid}>
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="title">Titre</label>
+            <label className={styles.label} htmlFor="title">
+              Titre
+            </label>
             <input
               id="title"
               name="title"
@@ -160,7 +172,9 @@ export function AdminConferencesPage() {
             />
           </div>
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="date">Date</label>
+            <label className={styles.label} htmlFor="date">
+              Date
+            </label>
             <input
               id="date"
               name="date"
@@ -172,7 +186,9 @@ export function AdminConferencesPage() {
             />
           </div>
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="duration">Duree</label>
+            <label className={styles.label} htmlFor="duration">
+              Duree
+            </label>
             <input
               id="duration"
               name="duration"
@@ -183,7 +199,9 @@ export function AdminConferencesPage() {
             />
           </div>
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="img">Image (URL)</label>
+            <label className={styles.label} htmlFor="img">
+              Image (URL)
+            </label>
             <input
               id="img"
               name="img"
@@ -195,7 +213,9 @@ export function AdminConferencesPage() {
             />
           </div>
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="mainColor">Couleur principale</label>
+            <label className={styles.label} htmlFor="mainColor">
+              Couleur principale
+            </label>
             <div className={styles.colorWrapper}>
               <input
                 id="mainColor"
@@ -209,7 +229,9 @@ export function AdminConferencesPage() {
             </div>
           </div>
           <div className={styles.field}>
-            <label className={styles.label} htmlFor="secondColor">Couleur secondaire</label>
+            <label className={styles.label} htmlFor="secondColor">
+              Couleur secondaire
+            </label>
             <div className={styles.colorWrapper}>
               <input
                 id="secondColor"
@@ -219,13 +241,52 @@ export function AdminConferencesPage() {
                 value={formValues.secondColor}
                 onChange={handleFieldChange}
               />
-              <span className={styles.colorValue}>{formValues.secondColor}</span>
+              <span className={styles.colorValue}>
+                {formValues.secondColor}
+              </span>
             </div>
           </div>
         </div>
 
+        <div className={styles.twoCol}>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="speakers">
+              Intervenants
+            </label>
+            <input
+              id="speakers"
+              name="speakers"
+              className={styles.input}
+              value={formValues.speakers}
+              onChange={handleFieldChange}
+              placeholder="Ex : Alice Martin, Bob Dupont"
+            />
+            <span className={styles.hint}>
+              Separez les noms par des virgules
+            </span>
+          </div>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="stakeholders">
+              Partenaires
+            </label>
+            <input
+              id="stakeholders"
+              name="stakeholders"
+              className={styles.input}
+              value={formValues.stakeholders}
+              onChange={handleFieldChange}
+              placeholder="Ex : Google, AWS"
+            />
+            <span className={styles.hint}>
+              Separez les noms par des virgules
+            </span>
+          </div>
+        </div>
+
         <div className={styles.field}>
-          <label className={styles.label} htmlFor="description">Description courte</label>
+          <label className={styles.label} htmlFor="description">
+            Description courte
+          </label>
           <textarea
             id="description"
             name="description"
@@ -238,7 +299,9 @@ export function AdminConferencesPage() {
         </div>
 
         <div className={styles.field}>
-          <label className={styles.label} htmlFor="content">Contenu detaille</label>
+          <label className={styles.label} htmlFor="content">
+            Contenu detaille
+          </label>
           <textarea
             id="content"
             name="content"
@@ -255,7 +318,11 @@ export function AdminConferencesPage() {
             {selectedId ? "Mettre a jour" : "+ Creer la conference"}
           </button>
           {selectedId && (
-            <button className={styles.secondary} type="button" onClick={resetForm}>
+            <button
+              className={styles.secondary}
+              type="button"
+              onClick={resetForm}
+            >
               Annuler
             </button>
           )}
@@ -264,7 +331,10 @@ export function AdminConferencesPage() {
 
       <section className={styles.panel}>
         <div className={styles.listHeader}>
-          <h2 className={styles.panelTitle} style={{ margin: 0, border: 0, padding: 0 }}>
+          <h2
+            className={styles.panelTitle}
+            style={{ margin: 0, border: 0, padding: 0 }}
+          >
             Conferences existantes
           </h2>
           {!isLoading && (
@@ -275,7 +345,13 @@ export function AdminConferencesPage() {
         </div>
 
         <div className={styles.searchWrapper}>
-          <svg className={styles.searchIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            className={styles.searchIcon}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.35-4.35" />
           </svg>
@@ -288,7 +364,11 @@ export function AdminConferencesPage() {
             aria-label="Rechercher une conference"
           />
           {search && (
-            <button className={styles.clearBtn} onClick={() => setSearch("")} type="button">
+            <button
+              className={styles.clearBtn}
+              onClick={() => setSearch("")}
+              type="button"
+            >
               x
             </button>
           )}
@@ -298,7 +378,9 @@ export function AdminConferencesPage() {
 
         {!isLoading && filtered.length === 0 && (
           <div className={styles.empty}>
-            {search ? `Aucun resultat pour "${search}".` : "Aucune conference pour le moment."}
+            {search
+              ? `Aucun resultat pour "${search}".`
+              : "Aucune conference pour le moment."}
           </div>
         )}
 
@@ -363,15 +445,17 @@ export function AdminConferencesPage() {
               &larr;
             </button>
             <div className={styles.pageNumbers}>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  className={`${styles.pageBtn} ${currentPage === page ? styles.pageBtnActive : ""}`}
-                  onClick={() => goToPage(page)}
-                >
-                  {page}
-                </button>
-              ))}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    className={`${styles.pageBtn} ${currentPage === page ? styles.pageBtnActive : ""}`}
+                    onClick={() => goToPage(page)}
+                  >
+                    {page}
+                  </button>
+                ),
+              )}
             </div>
             <button
               className={styles.pageBtn}

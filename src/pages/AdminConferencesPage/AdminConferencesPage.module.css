@@ -68,6 +68,24 @@
   gap: 0.375rem;
 }
 
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .twoCol {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hint {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
 .label {
   font-size: 0.8rem;
   font-weight: 600;
