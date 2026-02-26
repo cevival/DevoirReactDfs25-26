@@ -43,11 +43,12 @@ const personToString = (p) =>
 
 const toConferencePayload = (formValues) => ({
   title: formValues.title,
-  date: typeof formValues.date === "string"
-    ? formValues.date.slice(0, 10)
-    : formValues.date instanceof Date
-      ? formValues.date.toISOString().slice(0, 10)
-      : "",
+  date:
+    typeof formValues.date === "string"
+      ? formValues.date.slice(0, 10)
+      : formValues.date instanceof Date
+        ? formValues.date.toISOString().slice(0, 10)
+        : "",
   description: formValues.description,
   img: formValues.img,
   content: formValues.content,

@@ -134,31 +134,30 @@ export function HomePage() {
           </div>
         </div>
 
-        {isLoading && (
-          <p className={styles.loading}>Chargement des conférences…</p>
-        )}
-
-        {!isLoading && filtered.length === 0 && (
-          <div className={styles.empty}>
-            <p>
-              {search
-                ? `Aucun résultat pour « ${search} ».`
-                : "Aucune conférence pour le moment."}
-            </p>
-            {search && (
-              <button
-                type="button"
-                className={styles.resetBtn}
-                onClick={() => setSearch("")}
-              >
-                Réinitialiser la recherche
-              </button>
-            )}
-          </div>
-        )}
 
         <div className={styles.grid}>
-          {paginated.map((conference) => {
+          {isLoading && (
+            <p className={styles.loading}>Chargement des conférences…</p>
+          )}
+          {!isLoading && filtered.length === 0 && (
+            <div className={styles.empty}>
+              <p>
+                {search
+                  ? `Aucun résultat pour « ${search} ».`
+                  : "Aucune conférence pour le moment."}
+              </p>
+              {search && (
+                <button
+                  type="button"
+                  className={styles.resetBtn}
+                  onClick={() => setSearch("")}
+                >
+                  Réinitialiser la recherche
+                </button>
+              )}
+            </div>
+          )}
+          {!isLoading && filtered.length > 0 && paginated.map((conference) => {
             const key = conference?.id ?? conference?._id;
             return <ConferenceCard key={key} conference={conference} />;
           })}
