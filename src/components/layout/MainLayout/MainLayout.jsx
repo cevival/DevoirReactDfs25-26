@@ -11,8 +11,7 @@ export function MainLayout({ children }) {
     <div className={styles.layout}>
       <header className={styles.header}>
         <Link to={ROUTES.HOME} className={styles.brand}>
-          <img src="/logo.png" alt="Logo" className={styles.logo} />
-          <h1 className={styles.brandName}>ConférenceHub</h1>
+          <img src="/logo.png" alt="NexTalk" className={styles.logo} />
         </Link>
 
         <nav className={styles.nav} aria-label="Navigation principale">

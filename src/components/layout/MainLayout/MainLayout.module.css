@@ -1,9 +1,9 @@
-.layout {
+﻿.layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #0a0a12;
-  color: #e2e8f0;
+  background: #f8fafc;
+  color: #0f172a;
 }
 
 .header {
@@ -11,53 +11,44 @@
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
-  padding: 1rem 2.5rem;
-  background: #12112a;
-  border-bottom: 1px solid rgba(124, 58, 237, 0.18);
+  padding: 0.875rem 2.5rem;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 1rem;
   text-decoration: none;
-  color: inherit;
 }
 
 .logo {
-  height: 42px;
+  height: 40px;
   width: auto;
-}
-
-.brandName {
-  margin: 0;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #c4b5fd;
-  letter-spacing: -0.01em;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1.5rem;
   flex-wrap: wrap;
 }
 
 .link {
   text-decoration: none;
-  color: #a78bfa;
-  font-weight: 600;
+  color: #334155;
+  font-weight: 500;
   font-size: 0.95rem;
   transition: color 0.2s ease;
   position: relative;
 }
 
 .link:hover {
-  color: #ede9fe;
+  color: #7c3aed;
 }
 
 .link::after {
@@ -68,7 +59,7 @@
   width: 0;
   height: 2px;
   background: #7c3aed;
-  transition: width 0.3s ease;
+  transition: width 0.25s ease;
 }
 
 .link:hover::after {
@@ -76,34 +67,34 @@
 }
 
 .button {
-  border: 1px solid #7c3aed;
+  border: none;
   background: #7c3aed;
   color: #ffffff;
   border-radius: 0.5rem;
-  padding: 0.6rem 1.2rem;
+  padding: 0.55rem 1.1rem;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   transition: all 0.2s ease;
 }
 
 .button:hover {
   background: #6d28d9;
-  border-color: #6d28d9;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+  box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
 }
 
 .userInfo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 1rem;
-  background: rgba(124, 58, 237, 0.1);
-  border: 1px solid rgba(124, 58, 237, 0.2);
-  border-radius: 0.5rem;
-  font-weight: 500;
-  color: #c4b5fd;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  background: #f3f0ff;
+  border: 1px solid #ddd6fe;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #5b21b6;
 }
 
 .main {

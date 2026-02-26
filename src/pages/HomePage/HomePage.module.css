@@ -1,23 +1,32 @@
-.hero {
-  background: linear-gradient(160deg, #1a0533 0%, #12112a 60%, #0a0a12 100%);
-  padding: 4rem 2rem;
+﻿.hero {
+  background: #0f172a;
+  padding: 5rem 2rem;
   text-align: center;
-  border-bottom: 1px solid rgba(124, 58, 237, 0.2);
   color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 60% 50%, rgba(124, 58, 237, 0.25) 0%, transparent 65%);
+  pointer-events: none;
 }
 
 .heroTitle {
   margin: 0 0 0.75rem 0;
-  font-size: 2.75rem;
+  font-size: 3rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: #ede9fe;
+  color: #ffffff;
 }
 
 .heroSubtitle {
   margin: 0;
   font-size: 1.15rem;
-  color: #a78bfa;
+  color: #94a3b8;
   font-weight: 400;
 }
 
@@ -29,12 +38,11 @@
 
 .title {
   margin: 0 0 1.5rem 0;
-  font-size: 1.5rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  color: #c4b5fd;
+  color: #7c3aed;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-size: 0.85rem;
+  letter-spacing: 0.1em;
 }
 
 .grid {
@@ -44,18 +52,18 @@
 }
 
 .empty {
-  background: #1a1a2e;
-  border: 2px dashed rgba(124, 58, 237, 0.3);
+  background: #ffffff;
+  border: 2px dashed #e2e8f0;
   border-radius: 1rem;
   padding: 2.5rem;
   text-align: center;
-  color: #6d6d8a;
-  font-size: 1.05rem;
+  color: #94a3b8;
+  font-size: 1rem;
 }
 
 .loading {
   text-align: center;
   padding: 2rem;
-  color: #6d6d8a;
-  font-size: 1.05rem;
+  color: #94a3b8;
+  font-size: 1rem;
 }
