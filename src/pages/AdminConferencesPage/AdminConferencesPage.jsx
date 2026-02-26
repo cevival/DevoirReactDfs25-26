@@ -17,7 +17,7 @@ const emptyForm = {
   secondColor: "#0f172a",
 };
 
-const getConferenceId = (conference) => conference?._id ?? conference?.id;
+const getConferenceId = (conference) => conference?.id ?? conference?._id;
 
 const splitList = (str) =>
   str

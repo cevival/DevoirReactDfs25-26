@@ -12,14 +12,14 @@ export const conferencesApi = {
   },
 
   async create(conference) {
-    const response = await apiClient.post("/conference", { conference });
+    const response = await apiClient.post("/conference", conference);
     return response.data;
   },
 
   async update(id, conference) {
     const response = await apiClient.patch(
       `/conference/${encodeURIComponent(id)}`,
-      { conference },
+      conference,
     );
     return response.data;
   },
